@@ -1,0 +1,153 @@
+﻿<script>
+
+    function filterColumn(i) {
+        $('#defaultTable').DataTable().column(i).search(
+            $('#col' + i + '_filter').val()
+        ).draw();
+    }
+
+    // Función para eliminar registro
+    function deleteItem() {
+        var item = $(this).data("item");
+        var idItem = $(this).val();
+        var formUrl = $('form').attr('action');
+        var token = $('input[name="__RequestVerificationToken"]').val();
+        var url = window.location.href.split('?')[0];
+        Swal.fire({
+            title: '¿Eliminar ' + item + '?',
+            text: '¿Seguro desea eliminar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Si, eliminar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: formUrl,
+                    type: 'POST',
+                    data: {
+                        __RequestVerificationToken: token,
+                        id: idItem
+                    },
+                    success: function() {
+                        location.replace(url);
+                    },
+                    error: function() {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            iconColor: 'red',
+                            title: 'Error de conexión con el servidor',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    // Función principal
+    $(function() {
+
+        const langEsp = {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ de _END_ de _TOTAL_ filas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 filas",
+            "infoFiltered": "(Filtrado de _MAX_ total filas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ filas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            },
+            "searchPanes": {
+                "clearMessage": "Borrar todo",
+                "collapse": {
+                    "0": "Paneles de búsqueda",
+                    "_": "Paneles de búsqueda (%d)"
+                },
+                "count": "{total}",
+                "countFiltered": "{shown} ({total})",
+                "emptyPanes": "Sin paneles de búsqueda",
+                "loadMessage": "Cargando paneles de búsqueda",
+                "title": "Filtros Activos - %d",
+                "showMessage": "Mostrar Todo",
+                "collapseMessage": "Colapsar Todo"
+            }
+        };
+        const columSearch = (typeof customColumnSearch !== 'undefined') ? customColumnSearch : [0];
+
+        $('.btn-delete').on('click', deleteItem);
+
+        $.fn.dataTable.moment('D/M/YYYY');
+
+        var defaultTable = $("#defaultTable").DataTable({
+            "language": langEsp,
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "buttons": ["searchPanes"],
+            "dom": 'Bfrtip',
+            "columnDefs": [
+                {
+                    searchPanes: {
+                        show: true
+                    },
+                    targets: columSearch
+                },
+                { responsivePriority: 1, targets: 0 },
+                { responsivePriority: 2, targets: -1 }
+            ]
+        });
+        //defaultTable.buttons().container().appendTo('#defaultTable_wrapper .col-md-6:eq(0)');
+
+        $("#buttomsTable").DataTable({
+            language: langEsp,
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "colvis", "searchPanes"],
+            "dom": 'Bfrtip',
+            "columnDefs": [
+                {
+                    searchPanes: {
+                        show: true
+                    },
+                    targets: columSearch
+                }
+            ]
+        }).buttons().container().appendTo('#defaultTable_wrapper .col-md-6:eq(0)');
+
+        //Initialize Select2 Elements
+        //$('.select2').select2();
+
+        $('input.column_filter').on('keyup click',
+            function() {
+                filterColumn($(this).attr('data-column'));
+            });
+
+        $('select.column_filter').on('change',
+            function() {
+                filterColumn($(this).attr('data-column'));
+            });
+
+        $("#btnLimpiarFiltros").on('click',
+            function() {
+                $(".column_filter").val("").keyup();
+                $(".column_filter.select2").val("").change();
+                $('#mainTable').DataTable().search("").draw();
+            });
+
+    });
+
+</script>

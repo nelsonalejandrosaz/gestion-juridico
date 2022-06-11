@@ -1,9 +1,12 @@
 ﻿using GestionJuridico.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using GestionJuridico.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GestionJuridico.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

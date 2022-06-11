@@ -9,16 +9,51 @@
     {
       "library": "jquery@3.6.0",
       "destination": "wwwroot/lib/jquery/"
+    },
+    {
+      "library": "bootstrap@4.6.1",
+      "destination": "wwwroot/lib/bootstrap/"
+    },
+    {
+      "library": "font-awesome@5.15.4",
+      "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "library": "datatables.net-bs4@3.2.2",
+      "destination": "wwwroot/lib/datatables.net-bs4/"
+    },
+    {
+      "library": "datatables.net-responsive-bs4@2.2.9",
+      "destination": "wwwroot/lib/datatables.net-responsive-bs4/"
+    },
+    {
+      "library": "datatables.net-buttons-bs4@2.2.2",
+      "destination": "wwwroot/lib/datatables.net-buttons-bs4/"
+    },
+    {
+      "library": "datatables.net@2.1.1",
+      "destination": "wwwroot/lib/datatables.net/"
+    },
+    {
+      "library": "datatables.net-responsive@2.2.9",
+      "destination": "wwwroot/lib/datatables.net-responsive/"
+    },
+    {
+      "library": "datatables.net-buttons@2.2.2",
+      "destination": "wwwroot/lib/datatables.net-buttons/"
+    },
+    {
+      "library": "jszip@3.9.1",
+      "destination": "wwwroot/lib/jszip/"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "sweetalert2@11.4.9",
+      "destination": "wwwroot/lib/sweetalert2/"
+    },
+    {
+      "library": "select2@4.0.13",
+      "destination": "wwwroot/lib/select2/"
     }
-  ,
-{
-  "library": "bootstrap@4.6.1",
-  "destination": "wwwroot/lib/bootstrap/"
-}
-,
-{
-  "library": "font-awesome@5.15.4",
-  "destination": "wwwroot/lib/font-awesome/"
-}
-]
+  ]
 }

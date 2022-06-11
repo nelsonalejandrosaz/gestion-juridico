@@ -1,4 +1,5 @@
 ﻿using GestionJuridico.Models;
+using GestionJuridico.Utilities;
 
 namespace GestionJuridico.Services;
 
@@ -8,68 +9,112 @@ public class MenuService : IMenuService
     {
         var menu = new Menu()
         {
-            LabelItems = new List<LabelItem>()
+            Items = new List<CategoriaMenu>()
             {
-                new LabelItem()
+                new CategoriaMenu()
                 {
-                    Nombre = "Inicio", Items = new List<MenuItem>()
+                    Nombre = "Inicio", Items = new List<ItemMenu>()
                     {
-                        new MenuItem() { Nombre = "Home", Icono = "fa-home", Accion = "Index", Controlador = "Home" },
+                        new ItemMenu() { Nombre = "Home", Icono = "fa-home", Accion = "Index", Controlador = "Home", Roles = new List<string>() },
                     }
                 },
-                new LabelItem()
+                new CategoriaMenu()
                 {
-                    Nombre = "Correspondencia", Items = new List<MenuItem>()
+                    Nombre = "Correspondencia", ConjuntoItems = new List<ConjuntoItemMenu>()
                     {
-                        new MenuItem()
+                        new ConjuntoItemMenu()
                         {
-                            Nombre = "Correspondencia", Icono = "fa-envelope-open", TipoMenu = 2, SubMenuItems = new List<MenuItem>()
+                            Nombre = "Correspondencia", Icono = "fa-envelope-open", Items = new List<ItemMenu>()
                             {
-                                new MenuItem() { Nombre = "Lista", Controlador = "Correspondencia", Accion = "Index" },
-                                new MenuItem() { Nombre = "Ingresar correspondencia", Controlador = "Correspondencia", Accion = "Create" },
+                                new ItemMenu() { Nombre = "Lista", Controlador = "Correspondencia", Accion = "Index", Roles = new List<string>() },
+                                new ItemMenu() { Nombre = "Ingresar correspondencia", Controlador = "Correspondencia", Accion = "Create", Roles = new List<string>() },
                             }
                         },
                     }
                 },
-                new LabelItem()
+                new CategoriaMenu()
                 {
-                    Nombre = "Personas", Items = new List<MenuItem>()
+                    Nombre = "Gestiones", ConjuntoItems = new List<ConjuntoItemMenu>()
                     {
-                        new MenuItem() { 
-                            Nombre = "Personas", Icono = "fa-users", TipoMenu = 2, SubMenuItems = new List<MenuItem>()
+                        new ConjuntoItemMenu()
+                        {
+                            Nombre = "Solicitudes", Icono = "fa-clipboard", Items = new List<ItemMenu>()
                             {
-                                new MenuItem(){ Nombre = "Lista", Controlador = "Persona", Accion = "Index"},
-                                new MenuItem(){ Nombre = "Nueva persona", Controlador = "Persona", Accion = "Create"},
+                                new ItemMenu() { Nombre = "Lista", Controlador = "Solicitudes", Accion = "Index", Roles = Policies.SolicitudVerLista()},
+                                new ItemMenu() { Nombre = "Ingresar solicitud", Controlador = "Solicitudes", Accion = "Create", Roles = Policies.SolicitudCrud()},
                             }
-
+                        },
+                        new ConjuntoItemMenu()
+                        {
+                            Nombre = "Casos", Icono = "fa-clipboard", Items = new List<ItemMenu>()
+                            {
+                                new ItemMenu() { Nombre = "Lista", Controlador = "Casos", Accion = "Index", Roles = Policies.SolicitudVerLista()},
+                                new ItemMenu() { Nombre = "Ingresar caso", Controlador = "Casos", Accion = "Create", Roles = Policies.SolicitudCrud()},
+                            }
                         },
                     }
                 },
-                new LabelItem()
+                new CategoriaMenu()
                 {
-                    Nombre = "Catálogos", Items = new List<MenuItem>()
+                    Nombre = "Administrados", ConjuntoItems = new List<ConjuntoItemMenu>()
                     {
-                        new MenuItem() {
-                            Nombre = "Remitentes", Icono = "fa-address-card", TipoMenu = 2, SubMenuItems = new List<MenuItem>()
+                        new ConjuntoItemMenu() { 
+                            Nombre = "Personas", Icono = "fa-users", Items = new List<ItemMenu>()
                             {
-                                new MenuItem(){ Nombre = "Lista", Controlador = "Remitentes", Accion = "Index"},
-                                new MenuItem(){ Nombre = "Nueva persona", Controlador = "Remitentes", Accion = "Create"},
+                                new ItemMenu(){ Nombre = "Lista", Controlador = "Personas", Accion = "Index", Roles = new List<string>()},
+                                new ItemMenu(){ Nombre = "Nueva persona", Controlador = "Personas", Accion = "Create", Roles = new List<string>()},
                             }
                         },
-                        new MenuItem(){ Nombre = "Empleados", Controlador = "DatosEmpleados", Accion = "Index"},
-                        new MenuItem(){ Nombre = "Roles", Controlador = "Roles", Accion = "Index"},
-                        new MenuItem(){ Nombre = "Acciones", Controlador = "Acciones", Accion = "Index"},
-                        new MenuItem(){ Nombre = "Estados", Controlador = "Estados", Accion = "Index"},
-                        new MenuItem(){ Nombre = "Procesos", Controlador = "Proceso", Accion = "Index"},
-                        new MenuItem(){ Nombre = "Anexos", Controlador = "Anexos", Accion = "Index"},
-                        new MenuItem(){ Nombre = "Requerimientos", Controlador = "Requerimiento", Accion = "Index"},
-                        new MenuItem(){ Nombre = "Tipo Acción", Controlador = "TipoAccion", Accion = "Index"},
-                        new MenuItem(){ Nombre = "Tipo Archivo", Controlador = "TipoArchivo", Accion = "Index"},
-                        new MenuItem(){ Nombre = "Tipo Documento", Controlador = "TipoDocumentoRemitente", Accion = "Index"},
-                        new MenuItem(){ Nombre = "Tipo Entidad", Controlador = "TipoEntidad", Accion = "Index"},
-                        new MenuItem(){ Nombre = "Tipo Estado", Controlador = "TipoEstado", Accion = "Index"},
-                        new MenuItem(){ Nombre = "Tipo Remitente", Controlador = "TipoRemitente", Accion = "Index"},
-                        new MenuItem(){ Nombre = "Empleados Requerimiento", Controlador = "EmpleadosRequerimiento", Accion = "Create"},
+                        new ConjuntoItemMenu() {
+                            Nombre = "Administrados", Icono = "fa-address-book", Items = new List<ItemMenu>()
+                            {
+                                new ItemMenu(){ Nombre = "Lista", Controlador = "Administrados", Accion = "Index", Roles = new List<string>()},
+                                new ItemMenu(){ Nombre = "Nuevo administrado", Controlador = "Administrados", Accion = "Create", Roles = new List<string>()},
+                            }
+                        },
+                        new ConjuntoItemMenu() {
+                            Nombre = "Remitentes", Icono = "fa-address-book", Items = new List<ItemMenu>()
+                            {
+                                new ItemMenu(){ Nombre = "Lista", Controlador = "Remitentes", Accion = "Index", Roles = new List<string>(){"ADMINISTRADOR"}},
+                                new ItemMenu(){ Nombre = "Nueva persona", Controlador = "Remitentes", Accion = "Create", Roles = new List<string>()},
+                            }
+                        },
+                    }
+                },
+                new CategoriaMenu()
+                {
+                    Nombre = "Catálogos", 
+                    ConjuntoItems = new List<ConjuntoItemMenu>()
+                    {
+                        new ConjuntoItemMenu() {
+                            Nombre = "Catálogos procesos", Icono = "fa-project-diagram", Items = new List<ItemMenu>()
+                            {
+                                new ItemMenu(){ Nombre = "Test", Controlador = "Tests", Accion = "Index", Roles = Policies.CatalogosAdministracion()},
+                                new ItemMenu(){ Nombre = "Procesos", Controlador = "Procesos", Accion = "Index", Roles = Policies.CatalogosAdministracion()},
+                                new ItemMenu(){ Nombre = "Estados", Controlador = "Estados", Accion = "Index", Roles = Policies.CatalogosAdministracion()},
+                                new ItemMenu(){ Nombre = "Acciones", Controlador = "Acciones", Accion = "Index", Roles = Policies.CatalogosAdministracion()},
+                            }
+                        },
+                        new ConjuntoItemMenu() {
+                            Nombre = "Catálogos generales", Icono = "fa-sitemap", Items = new List<ItemMenu>()
+                            {
+                                new ItemMenu(){ Nombre = "Empleados", Controlador = "DatosEmpleados", Accion = "Index", Roles = Policies.CatalogosAdministracion()},
+                                new ItemMenu(){ Nombre = "Unidades Institución", Controlador = "UnidadesInstitucion", Accion = "Index", Roles = Policies.CatalogosAdministracion()},
+                                new ItemMenu(){ Nombre = "Roles", Controlador = "Roles", Accion = "Index", Roles = Policies.CatalogosAdministracion()},
+                                new ItemMenu(){ Nombre = "Anexos", Controlador = "Anexos", Accion = "Index", Roles = Policies.CatalogosAdministracion()},
+                                new ItemMenu(){ Nombre = "Requerimientos", Controlador = "Requerimiento", Accion = "Index", Roles = Policies.CatalogosAdministracion()},
+                                new ItemMenu(){ Nombre = "Tipo Acción", Controlador = "TiposAccion", Accion = "Index", Roles = Policies.CatalogosAdministracion()},
+                                new ItemMenu(){ Nombre = "Tipo Archivo", Controlador = "TipoArchivo", Accion = "Index", Roles = Policies.CatalogosAdministracion()},
+                                new ItemMenu(){ Nombre = "Tipo Documento", Controlador = "TipoDocumentoRemitente", Accion = "Index", Roles = Policies.CatalogosAdministracion()},
+                                new ItemMenu(){ Nombre = "Tipo Entidad", Controlador = "TipoEntidad", Accion = "Index", Roles = Policies.CatalogosAdministracion()},
+                                new ItemMenu(){ Nombre = "Tipo Estado", Controlador = "TipoEstado", Accion = "Index", Roles = Policies.CatalogosAdministracion()},
+                                new ItemMenu(){ Nombre = "Tipo Remitente", Controlador = "TipoRemitente", Accion = "Index", Roles = Policies.CatalogosAdministracion()},
+                                new ItemMenu(){ Nombre = "Tipo Emisor", Controlador = "TiposEmisor", Accion = "Index", Roles = Policies.CatalogosAdministracion()},
+                                new ItemMenu(){ Nombre = "Tipo Acto", Controlador = "TiposActo", Accion = "Index", Roles = Policies.CatalogosAdministracion()},
+                                new ItemMenu(){ Nombre = "Cargos Persona Representante", Controlador = "CargosPersonaRepresentante", Accion = "Index", Roles = Policies.CatalogosAdministracion()},
+                                new ItemMenu(){ Nombre = "Empleados Requerimiento", Controlador = "EmpleadosRequerimiento", Accion = "Create", Roles = Policies.CatalogosAdministracion()},
+                            }
+                        }
                     }
                 }
             }

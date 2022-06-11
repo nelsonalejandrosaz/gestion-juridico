@@ -1,0 +1,52 @@
+﻿@model GestionJuridico.Models.ViewModels.AccionEstadoViewModel
+@{
+
+}
+
+<div class="modal fade" id="modal-accion-normal">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Acción</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label">Comentario acción</label>
+                        <textarea class="form-control"></textarea>
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancelar</button>
+                    <button type="button" class="btn btn-success"><i class="fa fa-bullseye"></i> Realizar</button>
+                </div>
+            </form>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+@section Scripts
+{
+    <script>
+        $(function() {
+            // Función para cambiar título a model según acción
+            $('#modal-accion-normal').on('show.bs.modal',
+                function(event) {
+                    var button = $(event.relatedTarget); // Button that triggered the modal
+                    var nombreAccion = button.data('accion'); // Extract info from data-* attributes
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    modal.find('.modal-title').text(nombreAccion);
+                });
+        });
+    </script>
+}

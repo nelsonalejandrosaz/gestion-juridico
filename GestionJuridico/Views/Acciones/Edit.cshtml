@@ -1,0 +1,123 @@
+﻿@model Accion
+@{
+    ViewData["Title"] = "Editar Acción";
+    ViewData["CardTitle"] = "Acción";
+}
+
+<div class="row">
+    <div class="col-10 offset-1">
+        <div class="card card-gray-dark">
+            <div class="card-header">
+                <h3 class="card-title">@ViewData["CardTitle"]</h3>
+            </div>
+            <form asp-action="Create">
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <input asp-for="Id" type="hidden"/>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Codigo" class="control-label"></label>
+                        <input asp-for="Codigo" class="form-control"/>
+                        <span asp-validation-for="Codigo" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Nombre" class="control-label"></label>
+                        <input asp-for="Nombre" class="form-control"/>
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Descripcion" class="control-label"></label>
+                        <input asp-for="Descripcion" class="form-control"/>
+                        <span asp-validation-for="Descripcion" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TipoAccionId" class="control-label"></label>
+                        <select asp-for="TipoAccionId" class="form-control select2" asp-items="ViewBag.TiposAccion"></select>
+                        <span asp-validation-for="TipoAccionId" class="text-danger"></span>
+                    </div>
+                    <hr/>
+                    <h5>Estados flujo</h5>
+                    <div class="form-group">
+                        <label class="control-label">Proceso</label>
+                        <select id="ProcesoId" class="form-control select2" asp-items="ViewBag.Procesos">
+                            <option selected hidden>Selecciona un proceso</option>
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="EstadoActualId" class="control-label"></label>
+                                <select asp-for="EstadoActualId" class="form-control select2" asp-items="ViewBag.Estados"></select>
+                                <span asp-validation-for="EstadoActualId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="EstadoSiguienteId" class="control-label"></label>
+                                <select asp-for="EstadoSiguienteId" class="form-control select2" asp-items="ViewBag.Estados"></select>
+                                <span asp-validation-for="EstadoSiguienteId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-success btn-block"><i class="fa fa-save"></i> Guardar</button>
+
+                        </div>
+                        <div class="col-4">
+
+                        </div>
+                        <div class="col-4">
+                            <a class="btn btn-default btn-block" asp-action="Index"><i class="fa fa-arrow-left"></i> Regresar</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <!-- /.card -->
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script>
+        function getEstados() {
+            var procesoId = $('#ProcesoId').val();
+            $.ajax({
+                url: `/api/Estados/Proceso/${procesoId}`,
+                contentType: 'application/json',
+                type: 'GET',
+                success: function(data) {
+                    var options = "";
+                    for (var i = 0; i < data.length; i++) {
+                        options += "<option value='" + data[i].id + "'>" + data[i].nombre + "</option>";
+                    }
+                    $("#EstadoActualId").html(options);
+                    $("#EstadoSiguienteId").html(options);
+                },
+                error: function() {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        iconColor: 'red',
+                        title: 'Error de conexión con el servidor',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
+        }
+
+        $(function() {
+            $('#ProcesoId').on('change', getEstados);
+            //Initialize Select2 Elements
+            $('.select2').select2();
+        });
+    </script>
+}

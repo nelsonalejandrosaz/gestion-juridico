@@ -1,0 +1,13 @@
+﻿@model string?
+@{
+    var sinDatos = "Sin datos"; 
+}
+
+@if (Model is not null)
+{
+    @Model
+}
+else
+{
+    @sinDatos
+}

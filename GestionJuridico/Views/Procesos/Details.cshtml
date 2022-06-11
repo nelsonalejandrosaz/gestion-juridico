@@ -1,0 +1,58 @@
+﻿@model Proceso
+@{
+    ViewData["Title"] = "Procesos";
+}
+
+<div class="row">
+    <div class="col-10 offset-1">
+        <div class="card card-gray-dark">
+            <div class="card-header">
+                <h3 class="card-title">Proceso</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <dl>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Codigo)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Codigo)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Nombre)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Nombre)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Descripcion)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Descripcion)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.AccionInicialId)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.AccionInicialId)
+                    </dd>
+                </dl>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-4">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-block"><i class="fa fa-edit"></i> Editar</a>
+                    </div>
+                    <div class="col-4">
+
+                    </div>
+                    <div class="col-4">
+                        <a class="btn btn-default btn-block" asp-action="Index"><i class="fa fa-arrow-left"></i> Regresar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.card -->
+    </div>
+</div>

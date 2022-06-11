@@ -1,0 +1,75 @@
+﻿@model Caso
+@{
+    ViewData["Title"] = "Nuevo caso";
+    ViewData["CardTitle"] = "Caso";
+}
+
+<div class="row">
+    <div class="col-10 offset-1">
+        <div class="card card-gray-dark">
+            <div class="card-header">
+                <h3 class="card-title">@ViewData["CardTitle"]</h3>
+            </div>
+            <form asp-action="Create">
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Codigo" class="control-label"></label>
+                                <input asp-for="Codigo" disabled class="form-control"/>
+                                <span asp-validation-for="Codigo" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FechaApertura" class="control-label"></label>
+                                <input asp-for="FechaApertura" class="form-control"/>
+                                <span asp-validation-for="FechaApertura" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EntidadSolicitanteId" class="control-label"></label>
+                        <select asp-for="EntidadSolicitanteId" class="form-control select2" style="width: 100%" asp-items="ViewBag.EntidadesSolicitante"></select>
+                        <span asp-validation-for="EntidadSolicitanteId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Descripcion" class="control-label"></label>
+                        <textarea asp-for="Descripcion" class="form-control"></textarea>
+                        <span asp-validation-for="Descripcion" class="text-danger"></span>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-12 col-md-4 mb-2">
+                            <button type="submit" class="btn btn-success btn-block"><i class="fa fa-save"></i> Guardar</button>
+
+                        </div>
+                        <div class="col-12 col-md-4 mb-2">
+
+                        </div>
+                        <div class="col-12 col-md-4 mb-2">
+                            <a class="btn btn-default btn-block" asp-action="Index"><i class="fa fa-arrow-left"></i> Regresar</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- /.card -->
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script type="text/javascript">
+        $(function() {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+        });
+    </script>
+
+}

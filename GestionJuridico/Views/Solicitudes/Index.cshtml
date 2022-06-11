@@ -1,0 +1,82 @@
+﻿@model IEnumerable<GestionJuridico.Models.Solicitud>
+@{
+    ViewData["Title"] = "Solicitudes";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="col-12 col-md-3 mb-2">
+                    <a asp-action="Create" class="btn btn-primary btn-block"><i class="fa fa-plus-circle"></i> Nueva solicitud</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card card-gray-dark">
+            <div class="card-header">
+                <h3 class="card-title">Lista</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="defaultTable" class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Codigo)</th>
+                        <th>@Html.DisplayNameFor(model => model.UnidadSolicitante)</th>
+                        <th>@Html.DisplayNameFor(model => model.PersonaSolicitante)</th>
+                        <th>@Html.DisplayNameFor(model => model.EstadoActual)</th>
+                        <th>@Html.DisplayNameFor(model => model.EmpleadoAsignadoNombre)</th>
+                        <th>@Html.DisplayNameFor(model => model.FechaIngreso)</th>
+                        <th>@Html.DisplayNameFor(model => model.FechaFinalizado)</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Codigo)</td>
+                            <td>@Html.DisplayFor(modelItem => item.UnidadSolicitante.Nombre)</td>
+                            <td>@Html.DisplayFor(modelItem => item.PersonaSolicitante)</td>
+                            <td>@Html.DisplayFor(modelItem => item.EstadoActual.Nombre)</td>
+                            <td>@Html.DisplayFor(modelItem => item.EmpleadoAsignadoNombre)</td>
+                            <td>@item.FechaIngreso.ToString("d")</td>
+                            <td>@Html.DisplayFor(modelItem => item.FechaFinalizado)</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-default">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                    <button type="button" value="@item.Id" data-item="@item.Codigo" class="btn btn-danger btn-delete" title="Eliminar">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                    <form asp-action="Delete"></form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        // Variable para seleccionar columnas para buscar
+        var customColumnSearch = [0,1,2,3,4,5]
+    </script>
+    <partial name="_IndexJSPartial"/>
+}

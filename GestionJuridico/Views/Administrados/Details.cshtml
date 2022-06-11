@@ -1,0 +1,147 @@
+﻿@model Administrado
+@{
+    ViewData["Title"] = "Administrado";
+    ViewData["CardTitle"] = "Administrado";
+}
+
+<div class="row">
+    <div class="col-10 offset-1">
+        <div class="card card-gray-dark">
+            <div class="card-header">
+                <h3 class="card-title">@ViewData["CardTitle"]</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <dl>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Nombre)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Nombre)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.TipoEntidad)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.TipoEntidad.Nombre)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.NumeroDocumento)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.NumeroDocumento)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.TipoDocumento)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.TipoDocumento.Nombre)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Direccion)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Direccion)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Telefono)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Telefono)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Email)
+                    </dd>
+                </dl>
+                <h5>Representantes</h5><hr/>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>DUI</th>
+                        <th>Nombre</th>
+                        <th>Cargo</th>
+                        <th>Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        @foreach (var administradoPersona in Model.AdministradoPersonas)
+                        {
+                            <td>@administradoPersona.Persona.Dui</td>
+                            <td>@administradoPersona.Persona.Nombre</td>
+                            <td>@administradoPersona.CargoPersonaRepresentante.Nombre</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a asp-action="Edit" asp-route-id="1" class="btn btn-warning">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <button type="button" value="1" data-item="1" class="btn btn-danger btn-delete" title="Eliminar">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                    <form asp-action="Delete"></form>
+                                </div>
+                            </td>
+                        }
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-12 col-md-4 mb-2">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-block"><i class="fa fa-edit"></i> Editar</a>
+                    </div>
+                    <div class="col-12 col-md-4 mb-2">
+                        <button type="button" data-toggle="modal" data-target="#modal-agregar-representante" class="btn btn-primary btn-block">
+                            <i class="fa fa-user-plus"></i> Agregar representante
+                        </button>
+                    </div>
+                    <div class="col-12 col-md-4 mb-2">
+                        <a class="btn btn-default btn-block" asp-action="Index"><i class="fa fa-arrow-left"></i> Regresar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.card -->
+    </div>
+</div>
+
+<!-- Modal Accion Normal -->
+<div class="modal fade" id="modal-agregar-representante">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Representante</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="CambiarEstadoNormal" id="formModalAccionNormal">
+                <input type="hidden" name="SolicitudId" value="@Model.Id"/>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label">Persona</label>
+                        <select class="form-control select2" style="width: 100%" name="CasoId" asp-items="ViewBag.Personas"></select>
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Cargo</label>
+                        <select class="form-control select2" style="width: 100%" name="CasoId" asp-items="ViewBag.CargosPersonas"></select>
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancelar</button>
+                    <button type="submit" class="btn btn-success"><i class="fa fa-bullseye"></i> Asignar</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

@@ -1,0 +1,52 @@
+﻿@model CargoPersonaRepresentante
+@{
+    ViewData["Title"] = "Nuevo Cargo Persona Representante";
+    ViewData["CardTitle"] = "Cargo Persona Representante";
+}
+
+<div class="row">
+    <div class="col-10 offset-1">
+        <div class="card card-gray-dark">
+            <div class="card-header">
+                <h3 class="card-title">@ViewData["CardTitle"]</h3>
+            </div>
+            <form asp-action="Create">
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Codigo" class="control-label"></label>
+                        <input asp-for="Codigo" class="form-control"/>
+                        <span asp-validation-for="Codigo" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Nombre" class="control-label"></label>
+                        <input asp-for="Nombre" class="form-control"/>
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-success btn-block"><i class="fa fa-save"></i> Guardar</button>
+
+                        </div>
+                        <div class="col-4">
+
+                        </div>
+                        <div class="col-4">
+                            <a class="btn btn-default btn-block" asp-action="Index"><i class="fa fa-arrow-left"></i> Regresar</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <!-- /.card -->
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
