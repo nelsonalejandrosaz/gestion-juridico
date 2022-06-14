@@ -1,6 +1,7 @@
 ﻿using GestionJuridico.Data;
 using GestionJuridico.Extensions;
 using GestionJuridico.Models;
+using GestionJuridico.Models.ViewModels;
 using GestionJuridico.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -35,10 +36,18 @@ public class AdministradosController : Controller
             .Include(es => es.TipoEntidad)
             .Include(es => es.TipoDocumento)
             .Include(es => es.AdministradoPersonas)
-            //.Include(es => es.CargoPersonaRepresentante)
+            .ThenInclude(ap => ap.Persona)
+            .Include(es => es.AdministradoPersonas)
+            .ThenInclude(ap => ap.CargoPersonaRepresentante)
             .FirstOrDefault(es => es.Id == id);
         if (entidadSolicitante is null) return NotFound();
-        var personas = _context.Personas.ToList();
+        var personas = _context.Personas
+            .Select(p => new
+            {
+                p.Id,
+                Nombre = $"{p.Dui} - {p.Nombre}"
+            })
+            .ToList();
         var cargosPersonas = _context.CargosPersonaRepresentante.ToList();
         ViewData["Personas"] = new SelectList(personas, "Id", "Nombre");
         ViewData["CargosPersonas"] = new SelectList(cargosPersonas, "Id", "Nombre");
@@ -94,6 +103,30 @@ public class AdministradosController : Controller
         }
         LoadViewData();
         return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult AgregarRepresentante(PersonaCargoViewModel personaCargoViewModel)
+    {
+        if (ModelState.IsValid)
+        {
+            var administradoPersona = new AdministradoPersona()
+            {
+                AdministradoId = personaCargoViewModel.AdministradoId,
+                PersonaId = personaCargoViewModel.PersonaId,
+                CargoPersonaRepresentanteId = personaCargoViewModel.CargoId
+            };
+            _context.AdministradoPersona.Add(administradoPersona);
+            if (SaveChanges())
+            {
+                TempData.MessageSuccess("Representante agregado correctamente");
+                return RedirectToAction("Details", new { id = personaCargoViewModel.AdministradoId });
+            }
+            TempData.MessageDanger(AppMessages.ErrorGuardarDatos);
+        }
+        TempData.MessageDanger(AppMessages.ErrorGuardarDatos);
+        return RedirectToAction("Details", new { id = personaCargoViewModel.AdministradoId});
     }
 
     private void LoadViewData()
